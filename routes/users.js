@@ -47,15 +47,5 @@ router.get('/:postId', async (req, res) => {
   }
 });
 
-//Specific user
-router.get('/:name', async (req, res) => {
-  try{
-    const user = await User.find({name: req.params.name});
-    res.json(user);
-  }catch {
-    res.json({message: err});
-  }
-});
-
 module.exports = router;
 
