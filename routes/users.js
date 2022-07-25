@@ -5,8 +5,10 @@ const User = require('../models/User');
 //Routes
 //Get back all the user
 router.get('/', async (req, res) => {
+  const {username} = req.query;
+  const filter = username ? {name: username}:{};
   try{
-    const users = await User.find();
+    const users = await User.find(filter).exec();
     res.json(users);
     }
     catch(err) {
@@ -40,7 +42,7 @@ router.get('/:postId', async (req, res) => {
   try{
     const user = await User.findById(req.params.postId);
     res.json(user);
-  }catch {
+  }catch(err) {
     res.json({message: err});
   }
 });
@@ -51,26 +53,6 @@ router.get('/:name', async (req, res) => {
     const user = await User.find({name: req.params.name});
     res.json(user);
   }catch {
-    res.json({message: err});
-  }
-});
-
-
-//Update a patch
-router.patch('/:postId', async (req, res) => {
-  try {
-    const modifyUser = await User.updateOne(
-      {_id: req.params.postId},
-      {$set: {name: req.body.name}},
-      {$set: {phoneNumber: req.body.phoneNumber}},
-      {$set: {email: req.body.email}},
-      {$set: {product: req.body.product}},
-      {$set: {customerId: req.body.customerId}},
-      {$set: {quantity: req.body.quantity}},
-      {$set: {price: req.body.price}}
-      );
-    res.json(modifyUser);
-  }catch (err){
     res.json({message: err});
   }
 });
