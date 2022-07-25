@@ -39,22 +39,22 @@ router.post('/', async (req, res) => {
 router.get('/:postId', async (req, res) => {
   try{
     const user = await User.findById(req.params.postId);
-    res.json(post);
+    res.json(user);
   }catch {
     res.json({message: err});
   }
 });
 
-//Delete user
-//cId = customerId
-// router.delete('/:cId', async (req, res) => {
-//   try {
-//     const removedUser = await User.remove({_customerId: req.params.cId});
-//     res.json(removedUser);
-//   }catch (err){
-//     res.json({message: err});
-//   }
-// });
+//Specific user
+router.get('/:name', async (req, res) => {
+  try{
+    const user = await User.find({name: req.params.name});
+    res.json(user);
+  }catch {
+    res.json({message: err});
+  }
+});
+
 
 //Update a patch
 router.patch('/:postId', async (req, res) => {
