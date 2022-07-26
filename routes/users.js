@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
 //Get back all the user
 router.get('/is-sync', async (req, res) => {
   const { userId } = req.query;
-  const filter = userId ? { name: userId } : {};
+  const filter = userId ? { userId } : {};
   try {
     const user = await Sync.findOne(filter).exec();
     const {isSync} = user;
@@ -47,6 +47,19 @@ router.post('/', async (req, res) => {
   try {
     const createNewUser = await user.save();
     res.json(createNewUser);
+  }
+  catch (err) {
+    res.json({ message: err });
+  }
+});
+
+// Update user sync
+router.post('/toggle-sync', async (req, res) => {
+  const { userId } = req.query;
+  try {
+    const userSync = await Sync.findOne({userId}).exec();
+    const {isSync} = user;
+    await Sync.findOneAndUpdate({userId}, {$set:{isSync: !isSync}}).exec();
   }
   catch (err) {
     res.json({ message: err });
