@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
+
 //.env
 require('dotenv/config');
 
@@ -17,6 +19,10 @@ app.use('/users', usersRoute);
 app.get('/', (req, res) => {
   res.send('Home page');
 });
+
+app.use(cors({
+  origin: '*'
+}));
 
 //Connect to DB
 //.env

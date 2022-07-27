@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 });
 
 //Routes
-//Get back all the user
+//Check is sync
 router.get('/is-sync', async (req, res) => {
   const { userId } = req.query;
   const filter = userId ? { userId } : {};
@@ -58,8 +58,9 @@ router.post('/toggle-sync', async (req, res) => {
   const { userId } = req.query;
   try {
     const userSync = await Sync.findOne({userId}).exec();
-    const {isSync} = user;
-    await Sync.findOneAndUpdate({userId}, {$set:{isSync: !isSync}}).exec();
+    const isSync = userSync.isSync;
+    const result = await Sync.findOneAndUpdate({userId}, {$set:{isSync: !isSync}}).exec();
+    res.json(result);
   }
   catch (err) {
     res.json({ message: err });
